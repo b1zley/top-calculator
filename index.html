@@ -151,7 +151,14 @@
             console.log(firstNumberAsString)
 
             displayPanel.textContent = firstNumberAsString
-        } else {
+        } else if (
+            typeof answer !== 'undefined') {
+            secondNumberAsString += event.target.id
+            console.log(secondNumberAsString)
+            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+        }
+
+        else {
             console.log('secondNumber')
             secondNumberAsString += event.target.id
             console.log(secondNumberAsString)
@@ -163,23 +170,65 @@
 
     const aCButton = document.querySelector('#AC')
 
-    aCButton.addEventListener('click', (event) =>{
+    aCButton.addEventListener('click', (event) => {
 
         clear()
         console.log(firstNumberAsString)
     })
 
     const handleOperationButtonClick = (event) => {
-        if (typeof operatorAsString === 'undefined'
+        if (typeof operatorAsString === 'undefined' && typeof answer === 'undefined'
             &&
             (event.target.id !== 'equals'
-            && event.target.id !=='AC'
+                && event.target.id !== 'AC'
             )
         ) {
 
             operatorAsString = event.target.id
             displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
-        
+
+        }else if (typeof answer !== 'undefined'
+            &&
+            (event.target.id !== 'equals'
+                && event.target.id !== 'AC'
+            ) && (firstNumberAsString.length !== 0 && secondNumberAsString.length !==0)
+        ){
+            console.log(event.target.id)
+            console.log('chained operator')
+            handleEqualsButtonClick(event);
+            operatorAsString = event.target.id
+            firstNumberAsString = answer;
+            secondNumberAsString =''
+            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+
+
+        } else if (typeof answer !== 'undefined'
+            &&
+            (event.target.id !== 'equals'
+                && event.target.id !== 'AC'
+            )
+        ) {
+            console.log(event.target.id)
+            console.log('chained operator')
+            operatorAsString = event.target.id
+            firstNumberAsString = answer;
+            secondNumberAsString =''
+            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+
+        } else if (
+            (event.target.id !== 'equals'
+                && event.target.id !== 'AC'
+            )) {
+            //handle chained operation 1 + 2 - 3 with no equals input
+            handleEqualsButtonClick(event);
+            console.log(event.target.id)
+            console.log('chained operator no equals')
+            operatorAsString = event.target.id
+            firstNumberAsString = answer;
+            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+
+
+
         }
 
     }
@@ -216,7 +265,7 @@
     }
 
 
-    
+
 
 
     const displayAnswer = () => {
@@ -238,7 +287,7 @@
         const answerPanel = document.querySelector('#answerPanel')
         answerPanel.textContent = answer
 
-        displayPanel.textContent =''
+        displayPanel.textContent = ''
 
     }
 
