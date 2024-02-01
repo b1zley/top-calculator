@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <h1 id="title">
+        Calculator
+    </h1>
+    <div id="calcContainer">
+        <div id="viewPanelContainer">
+            <div id="answerPanel">
+
+            </div>
+            <div id="calculationPanel">
+
+            </div>
+
+        </div>
+
+
+        <div id="inputContainer">
+
+            <div id="numberInputsContainer">
+                <div class="numberRow" id="numberRow1">
+                    <button class="numberButton" id="1">
+                        1
+                    </button>
+                    <button class="numberButton" id="2">
+                        2
+                    </button>
+                    <button class="numberButton" id="3">
+                        3
+                    </button>
+
+                </div>
+                <div class="numberRow" id="numberRow2">
+                    <button class="numberButton" id="4">
+                        4
+                    </button>
+                    <button class="numberButton" id="5">
+                        5
+                    </button>
+                    <button class="numberButton" id="6">
+                        6
+                    </button>
+                </div>
+                <div class="numberRow" id="numberRow3">
+                    <button class="numberButton" id="7">
+                        7
+                    </button>
+                    <button class="numberButton" id="8">
+                        8
+                    </button>
+                    <button class="numberButton" id="9">
+                        9
+                    </button>
+                </div>
+
+                <div class="numberRow" id="numberRow4">
+                    <button class="numberButton" id="0">
+                        0
+                    </button>
+                </div>
+            </div>
+
+            <div id="operationInputsContainer">
+                <button class="operationButton" id="+">
+                    +
+                </button>
+                <button class="operationButton" id="-">
+                    -
+                </button>
+                <button class="operationButton" id="*">
+                    x
+                </button>
+                <button class="operationButton" id="/">
+                    /
+                </button>
+                <button class="operationButton" id="equals">
+                    =
+                </button>
+                <button class="operationButton" id="AC">
+                    AC
+                </button>
+            </div>
+
+
+
+
+        </div>
+
+
+
+    </div>
+
+</body>
+
+
+<script>
+
+    let firstNumberAsString = '';
+    let secondNumberAsString = '';
+    let operatorAsString = undefined;
+    let answer = undefined;
+
+    const displayPanel = document.querySelector('#calculationPanel')
+
+    const numberButtons = document.querySelectorAll('.numberButton')
+
+    numberButtons.forEach((numberButton) => {
+
+        numberButton.addEventListener('click', () => {
+            handleNumberButtonClick(event)
+        })
+
+    }
+
+    )
+
+
+    const operationButtons = document.querySelectorAll('.operationButton')
+
+    operationButtons.forEach((operationButton) => {
+
+        operationButton.addEventListener('click', () => {
+
+            handleOperationButtonClick(event)
+
+        })
+    })
+
+    const equalsButton = document.querySelector('#equals')
+
+    equalsButton.addEventListener('click', (event) => {
+        handleEqualsButtonClick(event)
+    })
+
+
+    const handleNumberButtonClick = (event) => {
+        if (
+            typeof operatorAsString === 'undefined') {
+
+            firstNumberAsString += event.target.id
+            console.log(firstNumberAsString)
+
+            displayPanel.textContent = firstNumberAsString
+        } else {
+            console.log('secondNumber')
+            secondNumberAsString += event.target.id
+            console.log(secondNumberAsString)
+            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+        }
+
+
+    }
+
+    const aCButton = document.querySelector('#AC')
+
+    aCButton.addEventListener('click', (event) =>{
+
+        clear()
+        console.log(firstNumberAsString)
+    })
+
+    const handleOperationButtonClick = (event) => {
+        if (typeof operatorAsString === 'undefined'
+            &&
+            (event.target.id !== 'equals'
+            && event.target.id !=='AC'
+            )
+        ) {
+
+            operatorAsString = event.target.id
+            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+        
+        }
+
+    }
+
+    const handleEqualsButtonClick = (event) => {
+
+
+        console.log('equalButtonClicked')
+        console.log(operatorAsString)
+        // trigger calculation and render answer to screen
+        const firstNumber = Number(firstNumberAsString)
+        const secondNumber = Number(secondNumberAsString)
+        switch (operatorAsString) {
+            case '+':
+                answer = addNumbers(firstNumber, secondNumber)
+
+                break;
+            case '-':
+                answer = subtractNumbers(firstNumber, secondNumber)
+                break;
+            case '*':
+                answer = multiplyNumbers(firstNumber, secondNumber)
+                break;
+            case '/':
+                answer = divideNumbers(firstNumber, secondNumber)
+                break;
+        }
+
+        console.log(answer)
+
+        displayAnswer()
+        console.log(firstNumberAsString)
+
+    }
+
+
+    
+
+
+    const displayAnswer = () => {
+        const answerPanel = document.querySelector('#answerPanel')
+        answerPanel.textContent = answer
+
+        firstNumberAsString = '';
+        secondNumberAsString = '';
+        operatorAsString = undefined;
+
+    }
+
+    const clear = () => {
+        firstNumberAsString = '';
+        secondNumberAsString = '';
+        operatorAsString = undefined;
+        answer = undefined;
+
+        const answerPanel = document.querySelector('#answerPanel')
+        answerPanel.textContent = answer
+
+        displayPanel.textContent =''
+
+    }
+
+
+
+    const addNumbers = (num1, num2) => {
+        return num1 + num2;
+    }
+
+    const subtractNumbers = (num1, num2) => {
+        return num1 - num2;
+    }
+
+    const multiplyNumbers = (num1, num2) => {
+        return num1 * num2;
+    }
+
+    const divideNumbers = (num1, num2) => {
+        return num1 / num2;
+    }
+</script>
+
+</html>
