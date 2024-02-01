@@ -187,19 +187,21 @@
             operatorAsString = event.target.id
             displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
 
-        }else if (typeof answer !== 'undefined'
+        } else if (typeof answer !== 'undefined'
             &&
             (event.target.id !== 'equals'
                 && event.target.id !== 'AC'
-            ) && (firstNumberAsString.length !== 0 && secondNumberAsString.length !==0)
-        ){
+            ) && (firstNumberAsString.length !== 0 && secondNumberAsString.length !== 0)
+        ) {
             console.log(event.target.id)
-            console.log('chained operator')
-            handleEqualsButtonClick(event);
-            operatorAsString = event.target.id
-            firstNumberAsString = answer;
-            secondNumberAsString =''
-            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+            console.log('chained operatorasd')
+            if (handleEqualsButtonClick(event)) {
+                operatorAsString = event.target.id
+                firstNumberAsString = answer;
+                secondNumberAsString = ''
+                displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+
+            };
 
 
         } else if (typeof answer !== 'undefined'
@@ -212,7 +214,7 @@
             console.log('chained operator')
             operatorAsString = event.target.id
             firstNumberAsString = answer;
-            secondNumberAsString =''
+            secondNumberAsString = ''
             displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
 
         } else if (
@@ -220,12 +222,14 @@
                 && event.target.id !== 'AC'
             )) {
             //handle chained operation 1 + 2 - 3 with no equals input
-            handleEqualsButtonClick(event);
-            console.log(event.target.id)
-            console.log('chained operator no equals')
-            operatorAsString = event.target.id
-            firstNumberAsString = answer;
-            displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+            if (handleEqualsButtonClick(event)) {
+                console.log(event.target.id)
+                console.log('chained operator no equals')
+                operatorAsString = event.target.id
+                firstNumberAsString = answer;
+                displayPanel.textContent = firstNumberAsString + operatorAsString + secondNumberAsString
+
+            };
 
 
 
@@ -241,26 +245,48 @@
         // trigger calculation and render answer to screen
         const firstNumber = Number(firstNumberAsString)
         const secondNumber = Number(secondNumberAsString)
-        switch (operatorAsString) {
-            case '+':
-                answer = addNumbers(firstNumber, secondNumber)
 
-                break;
-            case '-':
-                answer = subtractNumbers(firstNumber, secondNumber)
-                break;
-            case '*':
-                answer = multiplyNumbers(firstNumber, secondNumber)
-                break;
-            case '/':
-                answer = divideNumbers(firstNumber, secondNumber)
-                break;
+        //handle div 0 error
+        if (secondNumber === 0) {
+            alert("what are you stupid or something?")
+            firstNumberAsString = ''
+            secondNumberAsString = ''
+            operatorAsString = undefined
+            answer = undefined
+
+            const answerPanel = document.querySelector('#answerPanel')
+            answerPanel.textContent = 'FUCK'
+            displayPanel.textContent = 'FUCK'
+            return false;
+
+
+        } else {
+
+            switch (operatorAsString) {
+                case '+':
+                    answer = addNumbers(firstNumber, secondNumber)
+
+                    break;
+                case '-':
+                    answer = subtractNumbers(firstNumber, secondNumber)
+                    break;
+                case '*':
+                    answer = multiplyNumbers(firstNumber, secondNumber)
+                    break;
+                case '/':
+                    answer = divideNumbers(firstNumber, secondNumber)
+                    break;
+            }
+
+            console.log(answer)
+
+            displayAnswer()
+            console.log(firstNumberAsString)
+            return true
         }
 
-        console.log(answer)
 
-        displayAnswer()
-        console.log(firstNumberAsString)
+
 
     }
 
